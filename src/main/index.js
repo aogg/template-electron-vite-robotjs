@@ -6,7 +6,7 @@ import icon from '../../resources/icon.png?asset'
 
 // import * as hotkey from '../../src/main/src/global-shortcut'
 // import * as hotkey from '@main/global-shortcut'
-import {unregisterGlobalShortcut, registerGlobalShortcut} from '@main/global-shortcut'
+// import {unregisterGlobalShortcut, registerGlobalShortcut} from '@main/global-shortcut'
 // import hotkey from './src/global-shortcut'
 // const hotkey = require('@main/global-shortcut');
 
@@ -62,7 +62,7 @@ app.whenReady().then(() => {
   createWindow()
 
   
-  registerGlobalShortcut('`')
+  // registerGlobalShortcut('`')
 
   app.on('activate', function () {
     // On macOS it's common to re-create a window in the app when the
@@ -84,7 +84,8 @@ app.on('window-all-closed', () => {
 // code. You can also put them in separate files and require them here.
 
 app.on('will-quit', () => {
-  unregisterGlobalShortcut('`')
+  // unregisterGlobalShortcut('`')
+  
 })
 
 
