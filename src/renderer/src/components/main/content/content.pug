@@ -1,0 +1,88 @@
+#fast-input-content.overflow-y-hidden
+    //1、搜索
+    //2、添加
+    //3、右键（发送，删除，置顶，移动到其他分类）
+    //4、多选（发送，删除，置顶，移动到其他分类）
+    //5、导入excel
+
+    div
+
+        div
+            el-button-group
+                el-button(
+                    type="primary",
+                    size="small",
+                    icon="search",
+                    color="var(--fast-input--color-content-button)",
+                    @click="filterTextBool=!filterTextBool",
+                ) 搜索
+                el-button(
+                    type="primary" icon="plus" size="small",
+                    color="var(--fast-input--color-content-button)",
+                    @click="clickAddTopCate"
+                ) 添加分类
+                el-button(
+                    type="primary", color="var(--fast-input--color-content-button)",
+                    icon="switch",
+                    size="small",
+                    :dark="isDarkSwitch",
+                    @click="isDarkSwitch=!isDarkSwitch"
+                ) 多选
+
+
+        div(
+            v-if="isDarkSwitch"
+        )
+            el-button-group
+                el-button(
+                    type="primary" icon="promotion" size="small" color="var(--fast-input--color-2)"
+                ) 发送
+                el-button(
+                    type="primary",
+                    icon="delete",
+                    size="small",
+                    color="var(--fast-input--color-2)",
+                    @click="clickMultiDelete"
+                ) 删除内容
+                //el-button(
+                //    type="primary" icon="top" size="small" color="var(--fast-input--color-2)"
+                //) 置顶
+
+
+        div.my-1(
+            v-if="filterTextBool",
+        )
+            el-input( v-model="filterText" placeholder="搜索")
+
+    el-scrollbar.mt-1
+        // node-key="id",
+        el-tree(
+            :show-checkbox="isDarkSwitch",
+            ref="treeRef",
+            class="filter-tree",
+            :data="data",
+            :props="defaultProps",
+            default-expand-all,
+            :filter-node-method="filterNode",
+
+            :allow-drop="allowDrop",
+            :allow-drag="allowDrag",
+            draggable,
+
+            @node-drag-start="handleDragStart",
+            @node-drag-enter="handleDragEnter",
+            @node-drag-leave="handleDragLeave",
+            @node-drag-over="handleDragOver",
+            @node-drag-end="handleDragEnd",
+            @node-drop="handleDrop",
+        )
+            template(#default="{ node, data }")
+                TreeItemComponent(
+                    :data="data",
+                    :node="node",
+                    :isDarkSwitch="isDarkSwitch",
+                    @parentClickSend="clickSend"
+                    @parentDeleteNode="parentDeleteNode",
+                    @parentAppendCateNode="parentAppendCateNode",
+                    @parentAppendTextNode="parentAppendTextNode",
+                )

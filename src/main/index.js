@@ -4,6 +4,11 @@ import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 
 
+// const ipc = require(__dirname + '/../../src/nodeMain/ipc');
+import * as ipc from '@main/ipc/ipc'
+
+console.log('ipc', ipc);
+
 // import * as hotkey from '../../src/main/src/global-shortcut'
 // import * as hotkey from '@main/global-shortcut'
 // import {unregisterGlobalShortcut, registerGlobalShortcut} from '@main/global-shortcut'
@@ -23,6 +28,9 @@ function createWindow() {
       sandbox: false
     }
   })
+
+  
+  ipc.setInit(mainWindow)
 
   mainWindow.on('ready-to-show', () => {
     mainWindow.show()
@@ -61,6 +69,7 @@ app.whenReady().then(() => {
 
   createWindow()
 
+  ipc.run()
   
   // registerGlobalShortcut('`')
 

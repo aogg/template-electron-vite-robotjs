@@ -1,5 +1,7 @@
-import { contextBridge } from 'electron'
+import { ipcRenderer,contextBridge } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
+
+console.log('preload执行');
 
 // Custom APIs for renderer
 const api = {}
@@ -11,6 +13,11 @@ if (process.contextIsolated) {
   try {
     contextBridge.exposeInMainWorld('electron', electronAPI)
     contextBridge.exposeInMainWorld('api', api)
+    
+  contextBridge.exposeInMainWorld('electronAPI', {
+    clickSend: (data) => ipcRenderer.send('clickSend', data)
+  })
+
   } catch (error) {
     console.error(error)
   }
@@ -18,3 +25,11 @@ if (process.contextIsolated) {
   window.electron = electronAPI
   window.api = api
 }
+
+
+
+
+ipcRenderer.on('asynchronous-reply', (_event, arg) => {
+  console.log(arg) // 在 DevTools 控制台中打印“pong”
+})
+ipcRenderer.send('asynchronous-message', 'ping')

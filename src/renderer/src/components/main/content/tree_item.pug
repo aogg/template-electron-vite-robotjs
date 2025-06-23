@@ -1,0 +1,69 @@
+<!-- 移动上去显示浮动内容 -->
+div(
+    :class="['w-full','flex','justify-between', " +
+    "{'class-content-bool': data.hasOwnProperty('content')}]",
+    @click="clickSend(data, node, $event)",
+    @contextmenu="handlePopoverContextMenu(data, node, $event)"
+)
+
+    // :content="data['popover_content']",
+    el-popover(
+        placement="top",
+        :width="200",
+        :title="data.label",
+        trigger="hover",
+        ref="popover",
+    )
+        <template #reference>
+            div
+
+                span(v-if="!cateSaveBool" ) {{node.label}}
+
+                el-input(
+                    ref="cateInput",
+                    v-show="cateSaveBool",
+                    v-model="data.label",
+
+                    @change="cateSave",
+                    v-on:keyup.enter="cateSave",
+                    v-on:blur="cateSave",
+                )
+        </template>
+        div
+            div(
+                v-if="data.hasOwnProperty('content')"
+            )
+                el-collapse(
+                    v-model="dataContentKeys"
+                )
+                    el-collapse-item(
+                        v-for="(item, index) in data.content",
+                        :name="index.toString()"
+                    )
+                        <template v-slot:title>
+                            el-text(
+                                truncated,
+                            ) {{getContentCollapseItem(item)}}
+                        </template>
+                        span {{item.text}}
+            div(
+                v-if="!data.hasOwnProperty('content')"
+            ) 右键更多菜单
+        //div(
+        //    v-html="data['temp_popover_content']"
+        //)
+
+
+    span(
+        v-if="!isDarkSwitch && !cateSaveBool"
+    )
+        a.class-send(
+            title="发送",
+            @click="clickSend(data, node, $event)",
+            v-if="ifText()"
+        ) 发送
+        //a.text-gray-400(
+        //    class="mx-1",
+        //    title="置顶",
+        //    @click="clickTop(data)",
+        //) 置顶

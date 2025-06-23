@@ -1,6 +1,7 @@
 import { resolve } from 'path'
 import { defineConfig, externalizeDepsPlugin } from 'electron-vite'
 import vue from '@vitejs/plugin-vue'
+import pug from 'pug'
 
 export default defineConfig({
   main: {
@@ -31,6 +32,25 @@ export default defineConfig({
         '@renderer': resolve('src/renderer/src')
       }
     },
-    plugins: [vue()]
+    plugins: [
+      vue(),
+      {
+        name: 'vite-plugin-pug',
+        enforce: 'pre',
+        transform(code, id) {
+            if (/\.(pug)$/.test(id)) {
+                const compiled = pug.compile(code, {
+                    filename: id,
+                    basedir: process.cwd(),
+                    doctype: 'html'
+                })
+                return {
+                    code: `export default ${JSON.stringify(compiled())};`,
+                    map: null
+                }
+            }
+        }
+      }
+    ]
   }
 })

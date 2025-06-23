@@ -1,0 +1,91 @@
+#cate-div
+    el-row
+
+        el-col.local-border-bottom.text-center(:span="2")
+            el-dropdown(
+                class="!align-middle",
+                hide-on-click="false"
+            )
+                span.el-dropdown-link
+                    el-icon
+                        operation/
+                    el-icon.el-icon--right
+                        arrow-down/
+                    //el-icon.el-icon--right(:is="arrow-down")
+                template(v-slot:dropdown)
+                    el-dropdown-menu
+                        el-dropdown-item(
+                            v-for="(item, topAllIndex) in topCateAllArr",
+                            @click="clickCateShow(topAllIndex, 'top')",
+                        ) {{item.title}}
+                        el-dropdown-item(divided) 添加
+                        el-dropdown-item(
+                            divided,
+                            @click="clickCateClear('top')",
+                        ) 关闭所有
+
+
+        el-col(:span="22")
+            el-tabs(
+                id="top-cate-tabs",
+                v-model="topCateArrModelValue",
+                type="card",
+                closable,
+                @tab-remove="removeTopTab",
+                @tab-click="clickTopCate",
+            )
+                el-tab-pane(
+                    v-for="(item, topIndex) in topCateArr",
+                    :name="topIndex",
+                    :label="item.title",
+                )
+
+
+
+
+
+    el-row(
+        v-if="secondData.show"
+    )
+
+        el-col.local-border-bottom.text-center(:span="2")
+            el-dropdown(
+                class="!align-middle",
+                hide-on-click="false"
+            )
+                span.el-dropdown-link
+                    el-icon
+                        operation/
+                    el-icon.el-icon--right
+                        arrow-down/
+                    //el-icon.el-icon--right(:is="arrow-down")
+                template(v-slot:dropdown)
+                    el-dropdown-menu
+                        el-dropdown-item(
+                            v-for="(item, topAllIndex) in secondData.children",
+                            @click="clickCateShow(topAllIndex, 'second')",
+                        ) {{item.title}}
+                        el-dropdown-item(divided) 添加
+                        el-dropdown-item(
+                            divided,
+                            @click="clickCateClear('second')",
+                        ) 关闭所有
+
+
+
+        el-col(:span="22")
+            el-tabs(
+                v-model="secondData.CateArrModelValue",
+                type="card",
+                id="top-cate-tabs-second",
+                closable,
+                @tab-remove="removeSecondTab",
+            )
+                el-tab-pane(
+                    v-for="(itemSecond, topSecondIndex) in secondData.children_show",
+                    :name="topSecondIndex",
+                    :label="itemSecond.title",
+                )
+
+
+
