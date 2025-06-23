@@ -32,7 +32,7 @@ export default defineComponent({
     // },
 
     mounted() {
-        console.log(this.dataContentKeys);
+        // console.log(this.dataContentKeys);
         // console.log(this.rootTreeRef);
         // console.log(this.treeRef);
         if (this.cateSaveBool) {
@@ -75,6 +75,7 @@ export default defineComponent({
             return str;
         },
 
+
         clickSend(data, node, event){
             if (this.cateSaveBool) {
                 return;
@@ -84,6 +85,8 @@ export default defineComponent({
                 event.stopPropagation();
             }
             // console.log(event);
+            console.log(this.data)
+
 
             this.$emit('parentClickSend', data, node);
         },

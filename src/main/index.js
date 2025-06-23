@@ -49,7 +49,7 @@ function createWindow() {
     mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
   }
 
-  mainWindow.webContents.openDevTools();
+  setTimeout(() => mainWindow.webContents.openDevTools(), 100)
 
 }
 

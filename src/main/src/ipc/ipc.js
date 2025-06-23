@@ -4,16 +4,30 @@ const {clipboard, ipcMain} = require('electron');
 // const { windowManager } = require("node-window-manager");
 const robot = require('@jitsi/robotjs');
 
+import {sleep} from '@main/helper'
+
+
 let mainWindow = null;
+
+function getContentItemFullText(contentItem){
+
+    switch(contentItem.type){
+        case 'text':
+            return contentItem.text;
+    }
+    
+    return '';
+}
 
 export function run(){
     ipcMain.on('clickSend', (event, data) => {
         // console.log(event, data);
+        console.log('data=', data);
 
         // 获取系统剪贴板中的内容
-        const text = clipboard.readText()
+        // const text = clipboard.readText()
 
-        console.log('text=', text);
+        // console.log('黏贴text=', text);
 
         // 隐藏当前窗口
         // minimize
@@ -39,12 +53,26 @@ export function run(){
         // 执行黏贴操作
         // const text = 'hello i am a bit of text!'
         
+        async function runFor() {
+            
+            for (let contentItem of data.content) { 
+                let text = getContentItemFullText(contentItem)
+                console.log('send-text=', text);
+                clipboard.writeText(text)
+                // navigator.clipboard.writeText(text)
+
+                await sleep(100)
+                robot.keyTap("v", "control");
+                    
+                robot.keyTap("enter");
+            }
+        }
+
+        runFor()
 // clipboard.writeText(text)
-        robot.keyTap("v", "control");
         //
         //
-        // // 执行回车操作
-        robot.keyTap("enter");
+        // 执行回车操作
 
         // 执行黏贴操作
 
